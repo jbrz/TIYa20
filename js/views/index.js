@@ -1,4 +1,5 @@
 import listTemplate from './listView';
 import contactTemplate from './contactView';
+import newContact from './newContact';
 
-export {listTemplate, contactTemplate}
+export {newContact, listTemplate, contactTemplate}

@@ -29,17 +29,21 @@ var Router = _backbone2['default'].Router.extend({
 
   routes: {
     '': 'contactsList',
-    'contacts/:objectId': 'viewContact'
+    'contacts/:objectId': 'showContact',
+    'newContact': 'newContact'
 
   },
 
   initialize: function initialize(appElement) {
+    var _this = this;
+
     this.$el = appElement;
 
     this.contacts = new _contactsCollection2['default']();
 
     var router = this;
 
+    // Welcome to the Jungle
     this.$el.on('click', '.contact', function (event) {
       var $li = (0, _jQuery2['default'])(event.currentTarget);
       var contactId = $li.data('contact-id');
@@ -47,10 +51,24 @@ var Router = _backbone2['default'].Router.extend({
       router.showContact(contactId);
     });
 
+    // Take me down to paradise city
     this.$el.on('click', '.contactsList', function (event) {
       var $li = (0, _jQuery2['default'])(event.currentTarget);
       router.navigate('');
       router.contactsList();
+    });
+
+    this.$el.on('click', '.back-button', function (event) {
+      var $button = (0, _jQuery2['default'])(event.currentTarget);
+      var route = $button.data('to');
+      _this.navigate(route, { trigger: true });
+    });
+
+    // New Contact
+    this.$el.on('click', '#newContact', function (event) {
+      var $button = (0, _jQuery2['default'])(event.currentTarget);
+      router.navigate('newContact');
+      router.newContact();
     });
   },
 
@@ -61,20 +79,26 @@ var Router = _backbone2['default'].Router.extend({
   },
 
   showContact: function showContact(contactId) {
-    var _this = this;
+    var _this2 = this;
 
     var contact = this.contacts.get(contactId);
     if (contact) {
       this.$el.html((0, _views.contactTemplate)(contact.toJSON()));
     } else {
       (function () {
-        var router = _this;
-        contact = _this.contacts.add({ objectId: contactId });
+        var router = _this2;
+        contact = _this2.contacts.add({ objectId: contactId });
         contact.fetch().then(function () {
           router.$el.html((0, _views.contactTemplate)(contact.toJSON()));
         });
       })();
     }
+  },
+
+  newContact: function newContact() {
+    this.contacts.fetch().then(function () {
+      this.$el.html(newTemplate());
+    });
   },
 
   start: function start() {
@@ -86,7 +110,7 @@ var Router = _backbone2['default'].Router.extend({
 exports['default'] = Router;
 module.exports = exports['default'];
 
-},{"./contactsCollection":3,"./contactsModel":4,"./views":7,"backbone":9,"jQuery":10}],2:[function(require,module,exports){
+},{"./contactsCollection":3,"./contactsModel":4,"./views":7,"backbone":10,"jQuery":11}],2:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -105,7 +129,7 @@ _jquery2['default'].ajaxSetup({
   }
 });
 
-},{"jquery":11}],3:[function(require,module,exports){
+},{"jquery":12}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -137,7 +161,7 @@ var contactsCollection = _backbone2['default'].Collection.extend({
 exports['default'] = contactsCollection;
 module.exports = exports['default'];
 
-},{"./contactsModel":4,"backbone":9}],4:[function(require,module,exports){
+},{"./contactsModel":4,"backbone":10}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -161,7 +185,7 @@ var contactsModel = _backbone2['default'].Model.extend({
 exports['default'] = contactsModel;
 module.exports = exports['default'];
 
-},{"backbone":9}],5:[function(require,module,exports){
+},{"backbone":10}],5:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -203,14 +227,14 @@ router.start();
 
 console.log('Hello, World');
 
-},{"./Router":1,"./ajaxSetup":2,"./contactsCollection":3,"./contactsModel":4,"backbone":9,"jQuery":10,"moment":12,"underscore":13}],6:[function(require,module,exports){
+},{"./Router":1,"./ajaxSetup":2,"./contactsCollection":3,"./contactsModel":4,"backbone":10,"jQuery":11,"moment":13,"underscore":14}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 function contactTemplate(data) {
-  return "\n    <h2 class=\"contactsList title\"> Contacts </h2>\n    <ul>\n      <li> <i class=\"fa fa-odnoklassniki-square\"> </i> <span>Name:</span> " + data.Name + "</li>\n      <li> <i class=\"fa fa-phone-square\"></i> <span>Phone: </span>" + data.Number + "</li>\n      <li> <i class=\"fa fa-paper-plane\"></i> <span>Email:</span> " + data.email + "</li>\n      <li> <i class=\"fa fa-location-arrow\"></i> <span>Location:</span> " + data.loc + "</li>\n    </ul>\n  ";
+  return "\n    <h2 class=\"contactsList title\"> Contacts </h2>\n    <ul>\n      <li> <i class=\"fa fa-odnoklassniki-square\"> </i> <span>Name:</span> " + data.Name + "</li>\n      <li> <i class=\"fa fa-phone-square\"></i> <span>Phone: </span>" + data.Number + "</li>\n      <li> <i class=\"fa fa-paper-plane\"></i> <span>Email:</span> <a href=\"mailto:" + data.email + "\">" + data.email + "</a></li>\n      <li> <i class=\"fa fa-location-arrow\"></i> <span>Location:</span> " + data.loc + "</li>\n    </ul>\n  ";
 };
 
 exports["default"] = contactTemplate;
@@ -233,10 +257,15 @@ var _contactView = require('./contactView');
 
 var _contactView2 = _interopRequireDefault(_contactView);
 
+var _newContact = require('./newContact');
+
+var _newContact2 = _interopRequireDefault(_newContact);
+
+exports.newContact = _newContact2['default'];
 exports.listTemplate = _listView2['default'];
 exports.contactTemplate = _contactView2['default'];
 
-},{"./contactView":6,"./listView":8}],8:[function(require,module,exports){
+},{"./contactView":6,"./listView":8,"./newContact":9}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -249,13 +278,28 @@ function processContact(data) {
 }
 
 function listTemplate(data) {
-  return '\n    <h2 class="title"> Peeps </h2>\n    <ul> ' + processContact(data) + ' </ul>\n  ';
+  return '\n    <h2 class="title"> Peeps <button id="newContact">&#43;</button> </h2>\n    <ul> ' + processContact(data) + ' </ul>\n  ';
 }
 
 exports['default'] = listTemplate;
 module.exports = exports['default'];
 
 },{}],9:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = newTemplate;
+
+function newTemplate(data) {
+  return "\n    <form class=\"newContact\">\n      <input id=\"newName\">" + data.Name.put() + "</input>\n      <input id=\"newEmail\">" + data.email.put() + "</input>\n      <input id=\"newNumber\">>" + data.Number.put() + "</input>\n      <input id=\"newLocation\">>" + data.loc.put() + "</input>\n      <button class=\"saveContact\">Save</button>\n    </form>\n  ";
+}
+
+;
+module.exports = exports["default"];
+
+},{}],10:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.2.3
 
@@ -2154,7 +2198,7 @@ module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"jquery":11,"underscore":13}],10:[function(require,module,exports){
+},{"jquery":12,"underscore":14}],11:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -11366,9 +11410,9 @@ return jQuery;
 
 }));
 
-},{}],11:[function(require,module,exports){
-arguments[4][10][0].apply(exports,arguments)
-},{"dup":10}],12:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
+arguments[4][11][0].apply(exports,arguments)
+},{"dup":11}],13:[function(require,module,exports){
 //! moment.js
 //! version : 2.10.6
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -14564,7 +14608,7 @@ arguments[4][10][0].apply(exports,arguments)
     return _moment;
 
 }));
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors

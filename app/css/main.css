@@ -2024,13 +2024,31 @@ body {
 .app {
   max-width: 640px;
   margin-left: auto;
-  margin-right: auto; }
+  margin-right: auto;
+  position: relative; }
 
 .title {
-  background-color: #7FBE2C;
+  background-color: #85BC05;
   color: white;
   padding: 10px;
-  margin: 0; }
+  margin: 0;
+  position: relative; }
+  .title #newContact {
+    border-radius: 25px;
+    background-color: #AAD069;
+    border: none;
+    margin: 0;
+    position: absolute;
+    right: 10px;
+    top: 8px; }
+
+.newDiv {
+  position: absolute;
+  display: none; }
+  .newDiv .newContact {
+    width: 480px;
+    color: black;
+    padding: 10px; }
 
 ul {
   background-color: white;
@@ -2038,9 +2056,9 @@ ul {
   margin: 0;
   padding: 0; }
   ul li {
-    border-bottom: 1px solid #EBEBEB;
-    border-left: 1px solid #EBEBEB;
-    border-right: 1px solid #EBEBEB;
+    border-bottom: 1px solid #EAEAEA;
+    border-left: 1px solid #EAEAEA;
+    border-right: 1px solid #EAEAEA;
     cursor: pointer;
     padding: 10px 5px; }
 

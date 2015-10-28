@@ -10,7 +10,7 @@ function processContact(data) {
 
 function listTemplate(data) {
   return `
-    <h2 class="title"> Peeps </h2>
+    <h2 class="title"> Peeps <button id="newContact">&#43;</button> </h2>
     <ul> ${processContact(data)} </ul>
   `;
 }
