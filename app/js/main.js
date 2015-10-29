@@ -106,7 +106,6 @@ var Router = _backbone2['default'].Router.extend({
         loc: (0, _jQuery2['default'])('#newLocation').val()
       });
       newContact.save();
-      router.contactsList();
     });
   },
 

@@ -82,7 +82,6 @@ let Router = Backbone.Router.extend({
         loc: $('#newLocation').val()
       });
       newContact.save();
-      router.contactsList();
     });
   },
 
