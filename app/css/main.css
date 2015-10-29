@@ -2043,8 +2043,7 @@ body {
     top: 8px; }
 
 .newDiv {
-  position: absolute;
-  display: none; }
+  position: absolute; }
   .newDiv .newContact {
     width: 480px;
     color: black;

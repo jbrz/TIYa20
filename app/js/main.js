@@ -58,7 +58,8 @@ var Router = _backbone2['default'].Router.extend({
       router.contactsList();
     });
 
-    this.$el.on('click', '.back-button', function (event) {
+    //
+    this.$el.on('click', '.back', function (event) {
       var $button = (0, _jQuery2['default'])(event.currentTarget);
       var route = $button.data('to');
       _this.navigate(route, { trigger: true });
@@ -66,9 +67,8 @@ var Router = _backbone2['default'].Router.extend({
 
     // New Contact
     this.$el.on('click', '#newContact', function (event) {
-      var $button = (0, _jQuery2['default'])(event.currentTarget);
-      router.navigate('newContact');
-      router.newContact();
+      console.log('success!');
+      _this.navigate('newContact', { trigger: true });
     });
   },
 
@@ -96,8 +96,17 @@ var Router = _backbone2['default'].Router.extend({
   },
 
   newContact: function newContact() {
-    this.contacts.fetch().then(function () {
-      this.$el.html(newTemplate());
+    this.$el.html(_views.newContact);
+
+    (0, _jQuery2['default'])('#save').click(function () {
+      var newContact = new _contactsModel2['default']({
+        Name: (0, _jQuery2['default'])('#newName').val(),
+        phone: (0, _jQuery2['default'])('#newNumber').val(),
+        email: (0, _jQuery2['default'])('#newEmail').val(),
+        loc: (0, _jQuery2['default'])('#newLocation').val()
+      });
+      newContact.save();
+      router.contactsList();
     });
   },
 
@@ -234,7 +243,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 function contactTemplate(data) {
-  return "\n    <h2 class=\"contactsList title\"> Contacts </h2>\n    <ul>\n      <li> <i class=\"fa fa-odnoklassniki-square\"> </i> <span>Name:</span> " + data.Name + "</li>\n      <li> <i class=\"fa fa-phone-square\"></i> <span>Phone: </span>" + data.Number + "</li>\n      <li> <i class=\"fa fa-paper-plane\"></i> <span>Email:</span> <a href=\"mailto:" + data.email + "\">" + data.email + "</a></li>\n      <li> <i class=\"fa fa-location-arrow\"></i> <span>Location:</span> " + data.loc + "</li>\n    </ul>\n  ";
+  return "\n    <h2 class=\"contactsList title\"> Contacts </h2>\n    <ul>\n      <li> <i class=\"fa fa-odnoklassniki-square\"> </i> <span>Name:</span> " + data.Name + "</li>\n      <li> <i class=\"fa fa-phone-square\"></i> <span>Phone: </span>" + data.phone + "</li>\n      <li> <i class=\"fa fa-paper-plane\"></i> <span>Email:</span> <a href=\"mailto:" + data.email + "\">" + data.email + "</a></li>\n      <li> <i class=\"fa fa-location-arrow\"></i> <span>Location:</span> " + data.loc + "</li>\n    </ul>\n  ";
 };
 
 exports["default"] = contactTemplate;
@@ -285,21 +294,31 @@ exports['default'] = listTemplate;
 module.exports = exports['default'];
 
 },{}],9:[function(require,module,exports){
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
-exports["default"] = newTemplate;
+exports['default'] = newTemplate;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _contactsModel = require('../contactsModel');
+
+var _contactsModel2 = _interopRequireDefault(_contactsModel);
 
 function newTemplate(data) {
-  return "\n    <form class=\"newContact\">\n      <input id=\"newName\">" + data.Name.put() + "</input>\n      <input id=\"newEmail\">" + data.email.put() + "</input>\n      <input id=\"newNumber\">>" + data.Number.put() + "</input>\n      <input id=\"newLocation\">>" + data.loc.put() + "</input>\n      <button class=\"saveContact\">Save</button>\n    </form>\n  ";
+  return '\n    <div class="newDiv">\n      <h2 class="title">New Contact</h2>\n      <form class="newContact">\n        <input type="text" id="newName" placeholder="Name"></input>\n        <input type="text" id="newEmail" placeholder="E-mail Address"></input>\n        <input type="text" id="newNumber" placeholder="Phone Number"></input>\n        <input type="text" id="newLocation" placeholder="Location"></input>\n        <button class="back" id="save">Save</button>\n      </form>\n    </div>\n  ';
 }
 
 ;
-module.exports = exports["default"];
+module.exports = exports['default'];
 
-},{}],10:[function(require,module,exports){
+},{"../contactsModel":4,"jquery":12}],10:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.2.3
 

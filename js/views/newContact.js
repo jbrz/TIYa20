@@ -1,12 +1,16 @@
+import $ from 'jquery';
+import contactsModel from '../contactsModel';
+
 export default function newTemplate(data) {
   return `
     <div class="newDiv">
+      <h2 class="title">New Contact</h2>
       <form class="newContact">
-        <input id="newName">${data.Name.put()}</input>
-        <input id="newEmail">${data.email.put()}</input>
-        <input id="newNumber">>${data.Number.put()}</input>
-        <input id="newLocation">>${data.loc.put()}</input>
-        <button class="saveContact">Save</button>
+        <input type="text" id="newName" placeholder="Name"></input>
+        <input type="text" id="newEmail" placeholder="E-mail Address"></input>
+        <input type="text" id="newNumber" placeholder="Phone Number"></input>
+        <input type="text" id="newLocation" placeholder="Location"></input>
+        <button class="back" id="save">Save</button>
       </form>
     </div>
   `;
